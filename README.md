@@ -3,7 +3,7 @@
 ## Setting Up the Project
 
 1. Clone the Project
-2. Download *Open4Android 3.1.0* from this [Link](https://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.1.0/OpenCV-3.1.0-android-sdk.zip/download)
+2. Download *Open4Android 3.4.3* from this [Link](https://sourceforge.net/projects/opencvlibrary/files/opencv-android/3.4.3/OpenCV-3.1.0-android-sdk.zip/download)
 3. Unzip the *Opencv4Android SDK*
 4. Open the Project files from Android Studio
 5. - After successfully opening on Android project, Click on the **File-> New-> Import Module** and 
@@ -17,15 +17,11 @@
 8. Add the OpenCV Dependency
   - click on **File -> Project Structure**.
   - click on the **Dependencies** tab.
-  - Under the **App** module click the `+` in the *Decleared Dependencies* Section
+  - Under the **App** module click the `+` in the *Declared Dependencies* Section
   - Click on the **Module dependency** and add `Opencv4Android`
-<<<<<<< HEAD
 9. On the `OpenCv4Android SDK` Copy the `sdk/native/libs` folder into the app module main folder (Usually `ProjectName/app/src/main`) and rename the folder as `jniLibs`.
 10. Your project is ready and Must `Sync` and `Build` properly
-=======
-9. Your project is ready and Must `Sync` and `Build` properly
->>>>>>> origin/master
 
-## Contributers
+## Contributors
 
 - [Arkadip Bhattacharya](https://github.com/darkmatter18)
