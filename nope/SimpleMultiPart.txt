@@ -1,0 +1,26 @@
+        SimpleMultiPartRequest simpleMultiPartRequest = new SimpleMultiPartRequest(Request.Method.POST,
+                BASE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String message = jsonObject.getString("m");
+
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, error.getMessage());
+                    }
+        });
+
+        simpleMultiPartRequest.addStringParam("time", String.valueOf(System.currentTimeMillis()));
+        simpleMultiPartRequest.addFile("file", videoPath);
+        RequestQueueApp.getInstance().addToRequestQueue(simpleMultiPartRequest, RequestTag);

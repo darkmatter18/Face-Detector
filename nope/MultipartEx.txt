@@ -1,0 +1,72 @@
+    private void videoUpload(final String videoPath){
+        MultipartRequest multipartRequest = new MultipartRequest(Request.Method.POST,
+                BASE_URL,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        Log.d("RESPONSE", "GOTIT");
+                        try {
+                            JSONObject jsonObject = new JSONObject(Arrays.toString(response.data));
+                            String message = jsonObject.getString("m");
+
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.v("NetWorkError", "" + error);
+
+                        NetworkResponse networkResponse = error.networkResponse;
+                        String errorMessage = "Unknown error";
+
+                        if(networkResponse == null){
+
+                            //Timed out error
+                            if(error.getClass().equals(TimeoutError.class)) {
+                                errorMessage = "Request timeout";
+                            }
+
+                            //No connection error
+                            else if(error.getClass().equals(NoConnectionError.class)){
+                                errorMessage = "Failed to connect server";
+                            }
+
+                            else {
+                                String result = new String(networkResponse.data);
+                                try {
+                                    JSONObject response = new JSONObject(result);
+                                    //Farther Going with errrors
+                                    Log.e("NetWorkError", response.getString("error") );
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Log.i("Error", errorMessage);
+                            error.printStackTrace();
+                        }
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                //params.put("params", Param_Variable);
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+
+                try {
+                    params.put("file", new DataPart(,,))
+                }
+
+                return params;
+            }
+        };
+    }

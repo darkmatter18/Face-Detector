@@ -1,0 +1,67 @@
+    // Websocket Connetion
+    private void connectWebSocket() {
+        URI uri;
+        try {
+            uri = new URI("ws://echo.websocket.org");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        mWebSocketClient = new WebSocketClient(uri) {
+            @Override
+            public void onOpen(ServerHandshake serverHandshake) {
+                Log.e("Websocket", "Opened");
+                mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
+            }
+
+            @Override
+            public void onMessage(String s) {
+                final String message = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "Sending: "+ message);
+                    }
+                });
+            }
+
+            @Override
+            public void onMessage(ByteBuffer message){
+                Log.d(TAG, "Sending: message");
+            }
+
+            @Override
+            public void onClose(int i, String s, boolean b) {
+                Log.i("Websocket", "Closed " + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.i("Websocket", "Error " + e.getMessage());
+            }
+        };
+        mWebSocketClient.connect();
+    }
+
+    public void sendimage(byte[] img) {
+        if(mWebSocketClient.isOpen()) {
+            mWebSocketClient.send(img);
+        }
+    }
+
+
+                // Bitmap convertion
+                Bitmap image = Bitmap.createBitmap(out.cols(),
+                        out.rows(), Bitmap.Config.RGB_565);
+                Utils.matToBitmap(out, image);
+
+                //Byte array convertion
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+                // Sending
+                sendimage(byteArray);
+
+implementation "org.java-websocket:Java-WebSocket:1.4.0"

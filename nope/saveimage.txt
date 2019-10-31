@@ -1,0 +1,38 @@
+public static class saveImage extends AsyncTask<Mat, Void, Void> {
+        public static int imgSuffix;
+        public saveImage (int ImageSuffix){
+                imgSuffix = ImageSuffix;
+        }
+
+        @Override
+        protected Void doInBackground(Mat... mats) {
+            FileOutputStream outputStream;
+
+            try {
+
+                File sdCard = Environment.getExternalStorageDirectory();
+                File dir = new File(sdCard.getAbsolutePath() + "/faceD_saved");
+                dir.mkdir();
+
+                String fileName = "Image("+imgSuffix+").png";
+                File outFile = new File(dir, fileName);
+
+                outputStream = new FileOutputStream(outFile);
+
+                Mat mat = mats[0];
+                Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(mat, bitmap);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+                outputStream.flush();
+                outputStream.close();
+
+                Log.e(TAG, "Saving "+ fileName);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                return null;
+            }
+        }
+    }
